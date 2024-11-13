@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <img src="{{ movie.Poster }}" alt="{{ movie.Title }}" class="img-fluid">
+    </div>
+    <div class="col-md-8">
+        <h2>{{ movie.Title }} ({{ movie.Year }})</h2>
+        <p>{{ movie.Plot }}</p>
+        <p><strong>Director:</strong> {{ movie.Director }}</p>
+        <p><strong>Cast:</strong> {{ movie.Actors }}</p>
+        
+        <h3 class="mt-4">Add Your Review</h3>
+        <form action="{{ url_for('add_review', movie_id=movie.imdbID) }}" method="POST">
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating (1-5)</label>
+                <input type="number" name="rating" min="1" max="5" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="comment" class="form-label">Comment</label>
+                <textarea name="comment" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+        
+        <h3 class="mt-4">Reviews</h3>
+        {% for review in reviews %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Rating: {{ review.rating }}/5</h5>
+                <h6 class="card-subtitle mb-2 text-muted">By {{ review.username }}</h6>
+                <p class="card-text">{{ review.comment }}</p>
+                {% if review.user_id == session['user_id'] %}
+                <a href="{{ url_for('edit_review', review_id=review._id) }}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{{ url_for('delete_review', review_id=review._id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

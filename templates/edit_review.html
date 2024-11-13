@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Edit Review</h5>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating (1-5)</label>
+                        <input type="number" name="rating" min="1" max="5" class="form-control" value="{{ review.rating }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comment</label>
+                        <textarea name="comment" class="form-control" required>{{ review.comment }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+</div>
+{% endblock %}
