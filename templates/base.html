@@ -11,17 +11,20 @@
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('movie.index') }}">Movie Reviews</a>
             <div class="navbar-nav ms-auto">
+                <a class="nav-item nav-link" href="{{ url_for('review.view_all_reviews') }}">All Reviews</a>
                 {% if 'user_id' in session %}
+                    <a class="nav-item nav-link" href="{{ url_for('review.my_reviews') }}">My Reviews</a>
                     <span class="nav-item nav-link text-light">Welcome, {{ session['username'] }}</span>
                     <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 {% else %}
-                <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Login</a>
-                <a class="nav-item nav-link" href="{{ url_for('auth.register') }}">Register</a>
+                    <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                    <a class="nav-item nav-link" href="{{ url_for('auth.register') }}">Register</a>
                 {% endif %}
             </div>
         </div>
     </nav>
-
+    
+    
     <div class="container mt-4">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

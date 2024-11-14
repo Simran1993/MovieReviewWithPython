@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h2>Search Results for "{{ request.args.get('query', 'Shin Chan') }}"</h2>
+<h2>Search Results for "{{ query }}"</h2>
 <div class="row">
     {% for movie in movies %}
     <div class="col-md-4 mb-3">
@@ -15,4 +16,8 @@
     </div>
     {% endfor %}
 </div>
+
+{% if not movies %}
+<p class="text-center mt-4">No movies found for "{{ query }}".</p>
+{% endif %}
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block content %}
 <div class="row">
     <div class="col-md-4">
@@ -13,6 +14,8 @@
         {% if 'user_id' in session %}
         <h3 class="mt-4">Add Your Review</h3>
         <form action="{{ url_for('review.add_review', movie_id=movie.imdbID) }}" method="POST">
+            <input type="hidden" name="movie_title" value="{{ movie.Title }}">
+            <input type="hidden" name="movie_poster" value="{{ movie.Poster }}">
             <div class="mb-3">
                 <label for="rating" class="form-label">Rating (1-5)</label>
                 <input type="number" name="rating" min="1" max="5" class="form-control" required>
@@ -34,15 +37,9 @@
                 <h5 class="card-title">Rating: {{ review.rating }}/5</h5>
                 <h6 class="card-subtitle mb-2 text-muted">By {{ review.username }}</h6>
                 <p class="card-text">{{ review.comment }}</p>
-                
-                {% if 'user_id' in session and review.user_id == session['user_id'] %}
-                <a href="{{ url_for('review.edit_review', review_id=review._id) }}" class="btn btn-sm btn-warning">Edit</a>
-                <a href="{{ url_for('review.delete_review', review_id=review._id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
-                {% endif %}
             </div>
         </div>
         {% endfor %}
-        
     </div>
 </div>
 {% endblock %}

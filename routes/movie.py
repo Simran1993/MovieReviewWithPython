@@ -9,29 +9,27 @@ movie_bp = Blueprint('movie', __name__)
 MOVIE_API_URL = 'http://www.omdbapi.com/?apikey=b24150c3'
 
 @movie_bp.route('/')
-@login_required
 def index():
-    return render_template('index.html')
+    # Fetch random movies (or use a fixed query as placeholder)
+    response = requests.get(f'{MOVIE_API_URL}&s=batman')  # Replace "batman" with your placeholder
+    movies = response.json().get('Search', []) if response.status_code == 200 else []
+    return render_template('index.html', movies=movies)
 
-@movie_bp.route('/search', methods=['GET'])
-@login_required
+
+@movie_bp.route('/search', methods=['POST'])
 def search_movie():
-    # Get search query from URL parameters, default to 'Shin Chan'
-    search_query = request.args.get('query', 'Shin Chan')  
-    response = requests.get(f'{MOVIE_API_URL}&s={search_query}')
-    
-    # Parse API response and fetch list of movies
-    if response.status_code == 200:
-        movies = response.json().get('Search', [])
-        if movies:
-            return render_template('search_results.html', movies=movies)
-        else:
-            flash('No related movies found!', 'error')
-    else:
-        flash('Error fetching data from the movie API!', 'error')
-    
-    return redirect(url_for('movie.index'))
+    search_query = request.form.get('query', '').strip()
+    if not search_query:
+        flash('Please enter a movie name to search!', 'error')
+        return redirect(url_for('movie.index'))
+    return redirect(url_for('movie.search_results', query=search_query))
 
+@movie_bp.route('/search_results', methods=['GET'])
+def search_results():
+    search_query = request.args.get('query', '')
+    response = requests.get(f'{MOVIE_API_URL}&s={search_query}')
+    movies = response.json().get('Search', []) if response.status_code == 200 else []
+    return render_template('search_results.html', movies=movies, query=search_query)
 
 
 @movie_bp.route('/movie/<movie_id>')

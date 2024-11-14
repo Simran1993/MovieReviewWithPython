@@ -5,9 +5,11 @@ class ReviewModel(BaseModel):
     def get_collection(self):
         return self.db.reviews
 
-    def create_review(self, movie_id, user_id, username, rating, comment):
+    def create_review(self, movie_id, movie_title,movie_poster , user_id, username, rating, comment):
         review_data = {
             'movie_id': movie_id,
+            'movie_title': movie_title,
+            'movie_poster': movie_poster ,
             'user_id': user_id,
             'username': username,
             'rating': rating,
@@ -30,3 +32,6 @@ class ReviewModel(BaseModel):
 
     def find_by_user(self, user_id):
         return self.collection.find({'user_id': user_id})
+
+    def get_all_reviews(self):
+        return list(self.collection.find())  # Convert the cursor to a list for easy iteration
