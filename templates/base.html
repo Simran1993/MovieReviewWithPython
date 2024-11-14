@@ -9,14 +9,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Movie Reviews</a>
+            <a class="navbar-brand" href="{{ url_for('movie.index') }}">Movie Reviews</a>
             <div class="navbar-nav ms-auto">
                 {% if 'user_id' in session %}
                     <span class="nav-item nav-link text-light">Welcome, {{ session['username'] }}</span>
-                    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 {% else %}
-                    <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                    <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('auth.register') }}">Register</a>
                 {% endif %}
             </div>
         </div>

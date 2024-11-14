@@ -1,19 +1,20 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
+<h1 class="text-center">Welcome to Movie Reviews</h1>
+
+<div class="row">
+    {% for movie in movies %}
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <img src="{{ movie.Poster }}" alt="{{ movie.Title }}" class="card-img-top">
             <div class="card-body">
-                <h5 class="card-title">Search for a Movie</h5>
-                <form action="{{ url_for('search_movie') }}" method="POST">
-                    <div class="mb-3">
-                        <input type="text" name="movie_title" class="form-control" placeholder="Enter movie title" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
+                <h5 class="card-title">{{ movie.Title }}</h5>
+                <p class="card-text">{{ movie.Year }}</p>
+                <a href="{{ url_for('movie.movie_details', movie_id=movie.imdbID) }}" class="btn btn-primary">See Reviews</a>
             </div>
         </div>
     </div>
-    
+    {% endfor %}
 </div>
 {% endblock %}
