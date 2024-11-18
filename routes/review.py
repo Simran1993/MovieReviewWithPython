@@ -53,7 +53,10 @@ def delete_review(review_id):
 
 @review_bp.route('/reviews')
 def view_all_reviews():
-    reviews = current_app.review_model.get_all_reviews()
+    limit = int(request.args.get('limit', 10))  # Default to 10 reviews
+    page = int(request.args.get('page', 1))    # Default to page 1
+    skip = (page - 1) * limit
+    reviews = current_app.review_model.get_latest_reviews(limit=limit + skip)[skip:]
     return render_template('all_reviews.html', reviews=reviews)
 
 @review_bp.route('/my_reviews')

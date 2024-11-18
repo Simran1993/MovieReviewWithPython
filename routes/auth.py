@@ -21,16 +21,25 @@ def register():
         existing_user = current_app.user_model.find_by_username(username)
         
         if existing_user is None:
-            current_app.user_model.create_user(
+            user = current_app.user_model.create_user(
                 username=username,
                 email=request.form['email'],
                 password=request.form['password']
             )
+            # Create associated profile
+            current_app.profile_model.create_profile(
+                user_id=str(user.inserted_id),
+                username=username
+            )
             flash('Registration successful! Please login.', 'success')
             return redirect(url_for('auth.login'))
-        
-        flash('Username already exists!', 'error')
+        else:
+            flash('Username already exists. Please choose another one.', 'error')
+            return redirect(url_for('auth.register'))
+
+    # Handle GET request (Show registration form)
     return render_template('register.html')
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -45,6 +54,7 @@ def login():
             
         flash('Invalid username/password combination', 'error')
     return render_template('login.html')
+
 
 @auth_bp.route('/logout')
 def logout():

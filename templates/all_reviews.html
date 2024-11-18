@@ -13,6 +13,8 @@
                 <h6 class="card-subtitle mb-2 text-muted">Reviewed by: {{ review.username }}</h6>
                 <p class="card-text"><strong>Rating:</strong> {{ review.rating }}/5</p>
                 <p class="card-text">{{ review.comment }}</p>
+                <p class="card-text"><small class="text-muted">Movie ID: {{ review.movie_id }}</small></p>
+                <p class="card-text"><small class="text-muted">Created at: {{ review.created_at }}</small></p>
             </div>
         </div>
     </div>

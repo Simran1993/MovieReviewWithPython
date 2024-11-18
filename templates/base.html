@@ -14,6 +14,7 @@
                 <a class="nav-item nav-link" href="{{ url_for('review.view_all_reviews') }}">All Reviews</a>
                 {% if 'user_id' in session %}
                     <a class="nav-item nav-link" href="{{ url_for('review.my_reviews') }}">My Reviews</a>
+                    <a class="nav-item nav-link" href="{{ url_for('profile.view_profile', user_id=session['user_id']) }}">My Profile</a>
                     <span class="nav-item nav-link text-light">Welcome, {{ session['username'] }}</span>
                     <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 {% else %}

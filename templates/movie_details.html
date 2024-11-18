@@ -12,6 +12,9 @@
         <p><strong>Cast:</strong> {{ movie.Actors }}</p>
         
         {% if 'user_id' in session %}
+        <form action="{{ url_for('profile.add_to_watchlist', movie_id=movie.imdbID) }}" method="POST" class="mb-3">
+            <button type="submit" class="btn btn-primary">Add to Watchlist</button>
+        </form>
         <h3 class="mt-4">Add Your Review</h3>
         <form action="{{ url_for('review.add_review', movie_id=movie.imdbID) }}" method="POST">
             <input type="hidden" name="movie_title" value="{{ movie.Title }}">

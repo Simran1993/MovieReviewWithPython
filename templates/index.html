@@ -11,7 +11,7 @@
     </form>
 </div>
 
-<h2 class="mt-5">Random Movies</h2>
+<h2 class="mt-5">Movies</h2>
 <div class="row">
     {% for movie in movies %}
     <div class="col-md-4 mb-3">
@@ -20,6 +20,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ movie.Title }}</h5>
                 <p class="card-text">{{ movie.Year }}</p>
+                <a href="{{ url_for('movie.movie_details', movie_id=movie.imdbID) }}" class="btn btn-primary">View Details</a>
             </div>
         </div>
     </div>

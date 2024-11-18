@@ -5,14 +5,28 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card">
-                <img src="{{ user.profile_picture or '/static/default-profile.png' }}" 
-                     class="card-img-top" alt="{{ user.username }}'s profile">
+                <img src="{{ profile.profile_picture or '/static/images/default-profile.png' }}" 
+                     class="card-img-top" alt="{{ profile.username }}'s profile">
                 <div class="card-body">
-                    <h5 class="card-title">{{ user.username }}</h5>
-                    <p class="card-text">{{ user.bio or 'No bio available.' }}</p>
-                    {% if session.user_id == user._id|string %}
+                    <h5 class="card-title">{{ profile.username }}</h5>
+                    <p class="card-text">{{ profile.bio or 'No bio available.' }}</p>
+                    <div class="profile-stats">
+                        <p><strong>Reviews:</strong> {{ profile.total_reviews }}</p>
+                        <p><strong>Average Rating:</strong> {{ profile.avg_rating }}/5</p>
+                    </div>
+                    {% if profile.favorite_genres %}
+                    <div class="favorite-genres">
+                        <h6>Favorite Genres:</h6>
+                        <div class="genre-tags">
+                            {% for genre in profile.favorite_genres %}
+                            <span class="badge bg-primary">{{ genre }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if session.user_id == profile.user_id %}
                         <a href="{{ url_for('profile.edit_profile') }}" 
-                           class="btn btn-primary">Edit Profile</a>
+                           class="btn btn-primary mt-3">Edit Profile</a>
                     {% endif %}
                 </div>
             </div>
@@ -21,24 +35,15 @@
         <div class="col-md-8">
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Statistics</h5>
-                    <p>Total Reviews: {{ stats.total_reviews or 0 }}</p>
-                    <p>Average Rating: {{ "%.1f"|format(stats.average_rating or 0) }}/5</p>
-                    <p>Most Reviewed Genre: {{ stats.most_reviewed_genre or 'N/A' }}</p>
-                </div>
-            </div>
-            
-            <div class="card mb-3">
-                <div class="card-body">
                     <h5 class="card-title">Watchlist</h5>
                     <div class="row">
-                        {% for movie in watch_list %}
+                        {% for movie in profile.watch_list %}
                         <div class="col-md-4 mb-3">
                             <div class="card">
                                 <img src="{{ movie.poster }}" class="card-img-top" alt="{{ movie.title }}">
                                 <div class="card-body">
                                     <h6 class="card-title">{{ movie.title }} ({{ movie.year }})</h6>
-                                    {% if session.user_id == user._id|string %}
+                                    {% if session.user_id == profile.user_id %}
                                     <form action="{{ url_for('profile.remove_from_watchlist', movie_id=movie.movie_id) }}" 
                                           method="POST">
                                         <button type="submit" class="btn btn-danger btn-sm">Remove</button>
@@ -49,6 +54,20 @@
                         </div>
                         {% endfor %}
                     </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Reviews</h5>
+                    {% for review in reviews %}
+                    <div class="review-card mb-3">
+                        <h6>{{ review.movie_title }}</h6>
+                        <p class="text-muted">Rating: {{ review.rating }}/5</p>
+                        <p>{{ review.comment }}</p>
+                        <small class="text-muted">{{ review.created_at.strftime('%Y-%m-%d') }}</small>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

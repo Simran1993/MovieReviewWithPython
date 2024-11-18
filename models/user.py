@@ -40,5 +40,11 @@ class UserModel(BaseModel):
             }}}
         )
     
-
+    def verify_password(self, user, password):
+        """
+        Verifies the password against the stored hash.
+        """
+        return check_password_hash(user['password'], password)
     
+    
+

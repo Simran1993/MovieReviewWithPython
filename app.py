@@ -8,11 +8,14 @@ from db.db import DatabaseSetup
 from routes.auth import auth_bp
 from routes.movie import movie_bp
 from routes.review import review_bp
+from routes.profile import profile_bp
 
 # Import models and services
 from models.user import UserModel
 from models.review import ReviewModel
 from factories.movie_provider_factory import MovieProviderFactory
+from models.profile import ProfileModel
+
 
 def create_app():
     app = Flask(__name__)
@@ -41,11 +44,13 @@ def create_app():
         'omdb',
         'b24150c3'
     )
+    app.profile_model = ProfileModel(mongo.db)
     
     # Register blueprints
     app.register_blueprint(auth_bp)
     app.register_blueprint(movie_bp)
     app.register_blueprint(review_bp)
+    app.register_blueprint(profile_bp)
     
     return app
 
