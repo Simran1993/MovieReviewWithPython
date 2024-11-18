@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_pymongo import PyMongo
-from dotenv import load_dotenv
 import os
 from db.db import DatabaseSetup
 
@@ -16,10 +15,17 @@ from models.review import ReviewModel
 from factories.movie_provider_factory import MovieProviderFactory
 from models.profile import ProfileModel
 
+# Configure file uploads
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 def create_app():
     app = Flask(__name__)
     app.secret_key = '11dsd215e16e'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+    # Ensure the upload directory exists
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     
     # MongoDB Configuration
     app.config["MONGO_URI"] = "mongodb+srv://simrn204:Ottawa2004@simran1993.rc2c4.mongodb.net/MovieTable"
@@ -54,6 +60,11 @@ def create_app():
     
     return app
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 if __name__ == '__main__':
     app = create_app()
     app.run(debug=True)
+

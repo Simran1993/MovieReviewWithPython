@@ -2,8 +2,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, current_app
 from routes.auth import login_required
 from bson import ObjectId
+import gridfs
+from werkzeug.utils import secure_filename
+import os
 
 profile_bp = Blueprint('profile', __name__)
+
+# GridFS setup
+# fs = gridfs.GridFS(current_app.db)
 
 @profile_bp.route('/profile/create', methods=['GET', 'POST'])
 @login_required

@@ -6,17 +6,17 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Create Your Profile</h5>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="profile_picture" class="form-label">Profile Picture URL</label>
-                        <input type="url" name="profile_picture" id="profile_picture" class="form-control">
+                        <label for="profile_picture" class="form-label">Upload Profile Picture</label>
+                        <input type="file" name="profile_picture" id="profile_picture" class="form-control">
                     </div>
-                    
+                
                     <div class="mb-3">
                         <label for="bio" class="form-label">Bio</label>
                         <textarea name="bio" id="bio" class="form-control" rows="4"></textarea>
                     </div>
-                    
+                
                     <div class="mb-3">
                         <label class="form-label">Favorite Genres</label>
                         <div class="row">
@@ -30,9 +30,10 @@
                             {% endfor %}
                         </div>
                     </div>
-                    
+                
                     <button type="submit" class="btn btn-primary">Create Profile</button>
                 </form>
+                
             </div>
         </div>
     </div>
