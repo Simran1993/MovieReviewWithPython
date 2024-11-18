@@ -2,6 +2,7 @@ from flask import Flask
 from flask_pymongo import PyMongo
 from dotenv import load_dotenv
 import os
+from db.db import DatabaseSetup
 
 # Import blueprints
 from routes.auth import auth_bp
@@ -13,15 +14,25 @@ from models.user import UserModel
 from models.review import ReviewModel
 from factories.movie_provider_factory import MovieProviderFactory
 
-load_dotenv()
-
 def create_app():
     app = Flask(__name__)
     app.secret_key = '11dsd215e16e'
+    
+    # MongoDB Configuration
     app.config["MONGO_URI"] = "mongodb+srv://simrn204:Ottawa2004@simran1993.rc2c4.mongodb.net/MovieTable"
     
     # Initialize MongoDB
     mongo = PyMongo(app)
+    
+    # Setup database optimizations
+    print("Setting up database optimizations...")
+    db_setup = DatabaseSetup(app.config["MONGO_URI"])
+    setup_success = db_setup.setup_all()
+    
+    if setup_success:
+        print("Database optimization completed successfully!")
+    else:
+        print("Warning: Some database optimizations failed. Application will continue with reduced performance.")
     
     # Initialize models and services
     app.user_model = UserModel(mongo.db)
